@@ -36,10 +36,12 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {Debug.Log("Collider player");
             Destroy(this.gameObject);
-            Destroy(other.gameObject);
+            Player player = other.transform.GetComponent<Player>();
+            if (player != null)
+            {
+                player.Damage();
+            } 
         }
-        {
             
-        }
     }
 }
