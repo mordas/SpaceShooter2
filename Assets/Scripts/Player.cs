@@ -5,11 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
+    [SerializeField] private Transform _trippleLaser;
     [SerializeField] private Transform _laser;
     [SerializeField] private float _fireRate = 0.5f;
     private float _canFire = -1f;
     [SerializeField] private int _lives = 3;
     private SpawnManager _spawnManager;
+    private bool _trippleShot = false;
 
     void Start()
     {
@@ -55,7 +57,14 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
-        Instantiate(_laser, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
+        if (_trippleShot == false)
+        {
+            Instantiate(_laser, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
+        }
+        else if (_trippleShot = true)
+        {
+            Instantiate(_trippleLaser, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
+        }
     }
 
     public void Damage()
@@ -63,8 +72,21 @@ public class Player : MonoBehaviour
         _lives -= 1;
 
         if (_lives < 1)
-        {   _spawnManager.OnPlyerDeath();
+        {
+            _spawnManager.OnPlyerDeath();
             Destroy(this.gameObject);
         }
+    }
+
+    public void SetTrippleShot()
+    {
+        _trippleShot = true;
+        StartCoroutine(setTrippleShotDown(5));
+    }
+
+    IEnumerator setTrippleShotDown(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _trippleShot = false;
     }
 }

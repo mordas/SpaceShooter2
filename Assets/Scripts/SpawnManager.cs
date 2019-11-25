@@ -7,8 +7,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _enemy;
 
     private IEnumerator _corutine;
-    [SerializeField]
-    private GameObject _enemyContrainer;
+    [SerializeField] private GameObject _enemyContrainer;
 
     private bool _stopSpawning = false;
 
