@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemy;
+    [SerializeField] private GameObject _trippleShotPowerUpPrefab;
 
     private IEnumerator _corutine;
     [SerializeField] private GameObject _enemyContrainer;
@@ -13,15 +14,14 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        _corutine = SpawnRutine(5);
+        _corutine = SpawnEnemyRutine(5);
         StartCoroutine(_corutine);
+
+        StartCoroutine(TripplseShotSpawner());
     }
 
-    void Update()
-    {
-    }
 
-    IEnumerator SpawnRutine(float time)
+    IEnumerator SpawnEnemyRutine(float time)
     {
         while (_stopSpawning == false)
         {
@@ -29,6 +29,18 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(_enemy, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContrainer.transform;
             yield return new WaitForSeconds(time);
+        }
+    }
+
+    IEnumerator TripplseShotSpawner()
+    {
+        while (_stopSpawning == false)
+        {
+            float randomTime = Random.Range(3f, 8f);
+            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            Instantiate(_trippleShotPowerUpPrefab, posToSpawn, Quaternion.identity);
+            Debug.Log("Bonus");
+            yield return new WaitForSeconds(randomTime);
         }
     }
 
