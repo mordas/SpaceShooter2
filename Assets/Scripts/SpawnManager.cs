@@ -5,12 +5,13 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemy;
-    [SerializeField] private GameObject _trippleShotPowerUpPrefab;
 
     private IEnumerator _corutine;
     [SerializeField] private GameObject _enemyContrainer;
 
     private bool _stopSpawning = false;
+[SerializeField]
+    private GameObject[] powerups;
 
     void Start()
     {
@@ -38,8 +39,7 @@ public class SpawnManager : MonoBehaviour
         {
             float randomTime = Random.Range(3f, 8f);
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            Instantiate(_trippleShotPowerUpPrefab, posToSpawn, Quaternion.identity);
-            Debug.Log("Bonus");
+            Instantiate(powerups[Random.Range(0,powerups.Length-1)], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(randomTime);
         }
     }

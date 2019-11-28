@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField] private int _lives = 3;
     private SpawnManager _spawnManager;
     private bool _trippleShot = false;
+    private float _previosSpeed;
+    private bool _isBoostActive = false;
 
     void Start()
     {
@@ -88,5 +90,19 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         _trippleShot = false;
+    }
+
+    public void SetSpeedPowerUp()
+    {
+        _previosSpeed = _speed;
+        _speed = _speed * 2;
+        _isBoostActive = true;
+        StartCoroutine(SetSpeedPowerUpDown());
+    }
+
+    IEnumerator SetSpeedPowerUpDown()
+    {    yield return new WaitForSeconds(5);
+        _speed = _previosSpeed;
+        _isBoostActive = false;
     }
 }
