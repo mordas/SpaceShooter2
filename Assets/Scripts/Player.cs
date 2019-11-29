@@ -14,7 +14,9 @@ public class Player : MonoBehaviour
     private bool _trippleShot = false;
     private float _previosSpeed;
     private bool _isBoostActive = false;
+    private bool _shieldActive = false;
 
+    [SerializeField] private Transform _shieldPrefab; 
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -71,13 +73,17 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        _lives -= 1;
-
-        if (_lives < 1)
+        if (!_shieldActive)
         {
-            _spawnManager.OnPlyerDeath();
-            Destroy(this.gameObject);
+         _lives -= 1;
+ 
+         if (_lives < 1)
+         {
+             _spawnManager.OnPlyerDeath();
+             Destroy(this.gameObject);
+             
         }
+       }
     }
 
     public void SetTrippleShot()
@@ -104,5 +110,19 @@ public class Player : MonoBehaviour
     {    yield return new WaitForSeconds(5);
         _speed = _previosSpeed;
         _isBoostActive = false;
+    }
+
+    public void SetShieldActive()
+    {
+        _shieldActive = true;
+        StartCoroutine(SetShieldDown());
+        _shieldPrefab.gameObject.SetActive(true);
+    }
+
+    IEnumerator SetShieldDown()
+    {
+        yield return new WaitForSeconds(5);
+        _shieldActive = false;
+        _shieldPrefab.gameObject.SetActive(false);
     }
 }
