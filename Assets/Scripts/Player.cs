@@ -15,15 +15,26 @@ public class Player : MonoBehaviour
     private float _previosSpeed;
     private bool _isBoostActive = false;
     private bool _shieldActive = false;
+    private UI_Manager _uiManager;
+    private GameManager _gameManager;
+
+    [SerializeField] private int score = 0;
 
     [SerializeField] private Transform _shieldPrefab; 
     void Start()
     {
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
         {
             Debug.Log("The spawn manager is NULL");
+        }
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        if (_uiManager == null)
+        {
+           Debug.Log("UI manager is NULL"); 
         }
     }
 
@@ -80,10 +91,13 @@ public class Player : MonoBehaviour
          if (_lives < 1)
          {
              _spawnManager.OnPlyerDeath();
+             _uiManager.ShowGameOverText();
+             _gameManager.GameOver();
              Destroy(this.gameObject);
              
         }
        }
+        _uiManager.UpdateLives(_lives);
     }
 
     public void SetTrippleShot()
@@ -125,4 +139,16 @@ public class Player : MonoBehaviour
         _shieldActive = false;
         _shieldPrefab.gameObject.SetActive(false);
     }
+
+    public void SetScore(int s)
+    {
+        score += s;
+        _uiManager.UpdateScore(score);
+    }
+
+    public void RestartLevel()
+    {
+        
+    }
+
 }

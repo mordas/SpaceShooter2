@@ -6,9 +6,11 @@ public class Enemy : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float _speed = 4f;
+    [SerializeField] private GameObject _player;
 
     void Start()
     {
+        _player = GameObject.FindWithTag("Player");
     }
 
     // Update is called once per frame
@@ -27,9 +29,12 @@ public class Enemy : MonoBehaviour
         Debug.Log("Collider 1");
         if (other.tag == "Laser")
         {
-            Debug.Log("Collider Laser");
             Destroy(other.gameObject);
             Destroy(this.gameObject);
+            if (_player)
+            {
+           _player.GetComponent<Player>().SetScore(10); 
+            }
         }
 
         if (other.tag == "Player")
@@ -39,6 +44,7 @@ public class Enemy : MonoBehaviour
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
+            player.SetScore(5);
                 player.Damage();
             }
         }
