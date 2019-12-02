@@ -15,10 +15,15 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        _corutine = SpawnEnemyRutine(5);
-        StartCoroutine(_corutine);
+    }
 
+    public void StartSpawning(){
+        StartCoroutine(SpawnEnemyRutine(5));
         StartCoroutine(TripplseShotSpawner());
+    }
+    public void StopSpawning(){
+        StopCoroutine(SpawnEnemyRutine(5));
+        StopCoroutine(TripplseShotSpawner());
     }
 
 
@@ -26,6 +31,7 @@ public class SpawnManager : MonoBehaviour
     {
         while (_stopSpawning == false)
         {
+            yield return new WaitForSeconds(3f);
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
             GameObject newEnemy = Instantiate(_enemy, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContrainer.transform;
@@ -37,6 +43,7 @@ public class SpawnManager : MonoBehaviour
     {
         while (_stopSpawning == false)
         {
+            yield return new WaitForSeconds(2f);
             float randomTime = Random.Range(3f, 8f);
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
             Instantiate(powerups[Random.Range(0,powerups.Length)], posToSpawn, Quaternion.identity);

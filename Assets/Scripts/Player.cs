@@ -20,7 +20,10 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int score = 0;
 
-    [SerializeField] private Transform _shieldPrefab; 
+    [SerializeField] private Transform _shieldPrefab;
+
+    [SerializeField] private Transform _rightEngine;
+    [SerializeField] private Transform _leftEngine;
     void Start()
     {
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
@@ -34,7 +37,7 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         if (_uiManager == null)
         {
-           Debug.Log("UI manager is NULL"); 
+            Debug.Log("UI manager is NULL");
         }
     }
 
@@ -76,7 +79,7 @@ public class Player : MonoBehaviour
         {
             Instantiate(_laser, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
         }
-        else if (_trippleShot = true)
+        else if (_trippleShot == true)
         {
             Instantiate(_trippleLaser, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
         }
@@ -86,17 +89,24 @@ public class Player : MonoBehaviour
     {
         if (!_shieldActive)
         {
-         _lives -= 1;
- 
-         if (_lives < 1)
-         {
-             _spawnManager.OnPlyerDeath();
-             _uiManager.ShowGameOverText();
-             _gameManager.GameOver();
-             Destroy(this.gameObject);
-             
+            _lives -= 1;
+            if (_lives < 3)
+            {
+                _rightEngine.gameObject.SetActive(true);
+            }
+            else if (_lives < 2)
+            {
+                Debug.Log("Last Life");
+                _leftEngine.gameObject.SetActive(true);
+            }
+            else if (_lives < 1)
+            {
+                _spawnManager.OnPlyerDeath();
+                _uiManager.ShowGameOverText();
+                _gameManager.GameOver();
+                Destroy(this.gameObject);
+            }
         }
-       }
         _uiManager.UpdateLives(_lives);
     }
 
@@ -121,7 +131,8 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator SetSpeedPowerUpDown()
-    {    yield return new WaitForSeconds(5);
+    {
+        yield return new WaitForSeconds(5);
         _speed = _previosSpeed;
         _isBoostActive = false;
     }
@@ -148,7 +159,7 @@ public class Player : MonoBehaviour
 
     public void RestartLevel()
     {
-        
+
     }
 
 }
