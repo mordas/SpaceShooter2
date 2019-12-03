@@ -6,6 +6,14 @@ public class PowerUp : MonoBehaviour
 {
     [SerializeField] private float _speed = 3f;
     [SerializeField] private int _powerupID;
+    private GameObject _audioManagerObj;
+    private AudioManager _audioManager;
+
+    private void Start()
+    {
+       _audioManagerObj = GameObject.Find("Audio_Manager");
+       _audioManager = _audioManagerObj.GetComponent<AudioManager>();
+    }
 
     void Update()
     {
@@ -39,7 +47,7 @@ public class PowerUp : MonoBehaviour
                         break;
                 }
             }
-
+_audioManager.PlayPowerupSound();
             Destroy(gameObject);
         }
     }

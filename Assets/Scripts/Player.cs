@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Transform _rightEngine;
     [SerializeField] private Transform _leftEngine;
+    [SerializeField] private AudioSource _laserAudio;
     void Start()
     {
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
@@ -58,10 +59,7 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
         transform.Translate(direction * _speed * Time.deltaTime);
-
-
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.8f, 0f), 0);
-
         if (transform.position.x >= 11)
         {
             transform.position = new Vector3(-11, transform.position.y, 0);
@@ -83,6 +81,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(_trippleLaser, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
         }
+        _laserAudio.Play();
+        
     }
 
     public void Damage()
@@ -90,11 +90,11 @@ public class Player : MonoBehaviour
         if (!_shieldActive)
         {
             _lives -= 1;
-            if (_lives < 3)
+            if (_lives == 2)
             {
                 _rightEngine.gameObject.SetActive(true);
             }
-            else if (_lives < 2)
+            else if (_lives == 1 )
             {
                 Debug.Log("Last Life");
                 _leftEngine.gameObject.SetActive(true);
@@ -157,9 +157,6 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(score);
     }
 
-    public void RestartLevel()
-    {
-
-    }
+  
 
 }

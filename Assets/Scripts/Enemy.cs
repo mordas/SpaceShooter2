@@ -7,10 +7,14 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private float _speed = 4f;
     [SerializeField] private GameObject _player;
-
+    private GameObject _audioManager;
     private Animator _deadAnim;
     void Start()
-    {
+    {    _audioManager = GameObject.Find("Audio_Manager");
+        if (_audioManager == null)
+        {
+            Debug.Log("Audio manager is null");
+        }
         _player = GameObject.FindWithTag("Player");
         if (_player == null)
         {
@@ -68,6 +72,7 @@ public class Enemy : MonoBehaviour
         _speed = 0.5f;
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
             _deadAnim.SetBool("isDestroy",true);
+            _audioManager.GetComponent<AudioManager>().PlayExplosionSound();
             yield return new WaitForSeconds(1);
     }
 }

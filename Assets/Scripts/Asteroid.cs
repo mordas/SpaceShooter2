@@ -10,11 +10,13 @@ public class Asteroid : MonoBehaviour
     private GameObject _explosionPrefab;
     private Player _player;
 private SpawnManager _spawnManager;
+private GameObject _audioManager;
     void Start()
     {
        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
        _spawnManager.StopSpawning();
+       _audioManager = GameObject.Find("Audio_Manager");
     }
 
     void Update()
@@ -46,6 +48,7 @@ private SpawnManager _spawnManager;
 
     private void DestroyAsteroid(Collider2D other){
             Instantiate(_explosionPrefab,transform.position,Quaternion.identity);
+            _audioManager.GetComponent<AudioManager>().PlayExplosionSound();
             Destroy(this.gameObject,0.25f);
             Destroy(other.gameObject);
             _spawnManager.StartSpawning();
