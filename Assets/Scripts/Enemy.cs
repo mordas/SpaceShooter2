@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
         Debug.Log("Collider 1");
         if (other.tag == "Laser")
         {
-           // Destroy(other.gameObject);
+           Destroy(other.gameObject);
 //            Destroy(this.gameObject);
             //_deadAnim.SetBool("isDestroy",true);
             StartCoroutine(enemyDestroy());
