@@ -7,8 +7,11 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private float _speed = 4f;
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _enemyLaser;
     private GameObject _audioManager;
     private Animator _deadAnim;
+    private float _fireRate=3.0f;
+    private float _canFire = -1;
     void Start()
     {    _audioManager = GameObject.Find("Audio_Manager");
         if (_audioManager == null)
@@ -30,14 +33,32 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-        if (transform.position.y < -5)
-        {
-            float randomX = Random.Range(-8f, 8f);
-            transform.position = new Vector3(randomX, 5, 0);
-        }
+CalculateMovement();
+
+if (Time.time > _canFire)
+{
+    _fireRate = Random.Range(3f, 7f);
+    _canFire = Time.time + _fireRate;
+GameObject enemyLaser = Instantiate(_enemyLaser, transform.position, Quaternion.identity);
+Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+foreach (var laser in lasers)
+{
+   laser.AssignEnemyLaser(); 
+}
+
+}
+
     }
 
+    private void CalculateMovement()
+    {
+         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+         if (transform.position.y < -5)
+         {
+             float randomX = Random.Range(-8f, 8f);
+             transform.position = new Vector3(randomX, 5, 0);
+         }       
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Collider 1");

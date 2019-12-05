@@ -49,6 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   _player: {fileID: 0}
+  _enemyLaser: {fileID: 5481329968716859039, guid: ad34a7d7dc6e62040a0fd28e161555ca,
+    type: 3}
 --- !u!212 &4386073369010399740
 SpriteRenderer:
   m_ObjectHideFlags: 0
