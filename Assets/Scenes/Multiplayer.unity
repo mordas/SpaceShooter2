@@ -1768,6 +1768,11 @@ PrefabInstance:
       propertyPath: _laserAudio
       value: 
       objectReference: {fileID: 769660350}
+    - target: {fileID: 4241176832685054986, guid: 64ae33a1215cc3843bce919386c20c5b,
+        type: 3}
+      propertyPath: isPlayerOne
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4241176832685054987, guid: 64ae33a1215cc3843bce919386c20c5b,
         type: 3}
       propertyPath: m_Color.r

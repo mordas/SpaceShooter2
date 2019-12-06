@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public bool isPlayerOne = false;
     [SerializeField] private float _speed = 5f;
     [SerializeField] private Transform _trippleLaser;
     [SerializeField] private Transform _laser;
@@ -25,11 +26,16 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _rightEngine;
     [SerializeField] private Transform _leftEngine;
     [SerializeField] private AudioSource _laserAudio;
+
+    // [SerializeField]
+    //     private Animator _animController;
     void Start()
     {
+        // _animController = gameObject.GetComponent<Animator>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
-        if(!_gameManager.isCoop){
-        transform.position = new Vector3(0, 0, 0);
+        if (!_gameManager.isCoop)
+        {
+            transform.position = new Vector3(0, 0, 0);
         }
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
@@ -46,22 +52,64 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        CalculateMovement();
 
-
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (isPlayerOne)
         {
-            FireLaser();
+            CalculateMovementPlayerOne();
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+            {
+                FireLaser();
+            }
+        }
+        else if (!isPlayerOne)
+        {
+            CalculateMovementPlayerTwo();
+            if (Input.GetKeyDown(KeyCode.Return) && Time.time > _canFire)
+            {
+                FireLaser();
+            }
         }
     }
 
-    void CalculateMovement()
+    void CalculateMovementPlayerOne()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+
         transform.Translate(direction * _speed * Time.deltaTime);
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.8f, 0f), 0);
+        if (transform.position.x >= 11)
+        {
+            transform.position = new Vector3(-11, transform.position.y, 0);
+        }
+        else if (transform.position.x <= -11)
+        {
+            transform.position = new Vector3(11, transform.position.y, 0);
+        }
+    }
+    void CalculateMovementPlayerTwo()
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Translate(Vector3.left * _speed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            transform.Translate(Vector3.right * _speed * Time.deltaTime);
+        }
+
+
+
+
         if (transform.position.x >= 11)
         {
             transform.position = new Vector3(-11, transform.position.y, 0);
@@ -84,7 +132,7 @@ public class Player : MonoBehaviour
             Instantiate(_trippleLaser, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
         }
         _laserAudio.Play();
-        
+
     }
 
     public void Damage()
@@ -96,7 +144,7 @@ public class Player : MonoBehaviour
             {
                 _rightEngine.gameObject.SetActive(true);
             }
-            else if (_lives == 1 )
+            else if (_lives == 1)
             {
                 Debug.Log("Last Life");
                 _leftEngine.gameObject.SetActive(true);
@@ -159,6 +207,6 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(score);
     }
 
-  
+
 
 }
