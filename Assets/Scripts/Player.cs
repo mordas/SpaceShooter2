@@ -28,7 +28,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        if(!_gameManager.isCoop){
         transform.position = new Vector3(0, 0, 0);
+        }
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
         {

@@ -8,13 +8,18 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private bool _isGameOver = false;
+    public bool isCoop = false;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && _isGameOver == true )
+        if (Input.GetKeyDown(KeyCode.R) && _isGameOver == true)
         {
             SceneManager.LoadScene(0);
             _isGameOver = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }
 
