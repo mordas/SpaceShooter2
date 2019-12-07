@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         }
 
         if(Input.GetKeyDown(KeyCode.P)){
-            _mMenuPanel.active = true;
+            _mMenuPanel.SetActive(true);
             _mMenuPanel.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
             _mMenuPanel.GetComponent<Animator>().SetBool("play_Anim",true);
 

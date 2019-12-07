@@ -61,7 +61,7 @@ public class UI_Manager : MonoBehaviour
     }
 
     public void Resume(){
-        _mMenuPanel.active = false;
+        _mMenuPanel.SetActive(false);
         Time.timeScale = 1;
             _mMenuPanel.GetComponent<Animator>().SetBool("play_Anim",false);
     }
