@@ -12,13 +12,26 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartText;
     [SerializeField] private GameObject _mMenuPanel;
+    [SerializeField] private Text _bestScoreText;
+
+    private int _bestScore = 0;
     void Start()
     {
         _scoreText.text = "Score: " + "0";
+        _bestScore = PlayerPrefs.GetInt("score",0);
+       _bestScoreText.text = "Best: " + _bestScore;
     }
     public void UpdateScore(int playerScore)
     {
         _scoreText.text = "Score: " + playerScore.ToString();
+    }
+
+    public void BestScore(int bestScore){
+       if(bestScore > _bestScore){
+       _bestScore = bestScore; 
+       PlayerPrefs.SetInt("score",_bestScore);
+       _bestScoreText.text = "Best: " + _bestScore;
+       }
     }
 
     public void UpdateLives(int live)

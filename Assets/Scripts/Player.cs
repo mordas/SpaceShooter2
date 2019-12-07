@@ -159,7 +159,6 @@ public class Player : MonoBehaviour
             }
             else if (_lives == 1)
             {
-                Debug.Log("Last Life");
                 _leftEngine.gameObject.SetActive(true);
             }
             else if (_lives < 1)
@@ -167,6 +166,7 @@ public class Player : MonoBehaviour
                 _spawnManager.OnPlyerDeath();
                 _uiManager.ShowGameOverText();
                 _gameManager.GameOver();
+                _uiManager.BestScore(score);
                 Destroy(this.gameObject);
             }
         }
@@ -218,6 +218,10 @@ public class Player : MonoBehaviour
     {
         score += s;
         _uiManager.UpdateScore(score);
+    }
+
+    public int GetScore(){
+        return score;
     }
 
 
