@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private bool _isGameOver = false;
     public bool isCoop = false;
 
+    [SerializeField] private GameObject _mMenuPanel;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R) && _isGameOver == true)
@@ -25,10 +26,19 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
+
+        if(Input.GetKeyDown(KeyCode.P)){
+            _mMenuPanel.active = true;
+            _mMenuPanel.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+            _mMenuPanel.GetComponent<Animator>().SetBool("play_Anim",true);
+
+            Time.timeScale = 0;
+        }
     }
 
     public void GameOver()
     {
         _isGameOver = true;
     }
+
 }

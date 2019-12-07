@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool isPlayerOne = false;
+    public bool isPlayerTwo = false;
+    
     [SerializeField] private float _speed = 5f;
     [SerializeField] private Transform _trippleLaser;
     [SerializeField] private Transform _laser;
@@ -27,11 +29,10 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _leftEngine;
     [SerializeField] private AudioSource _laserAudio;
 
-    // [SerializeField]
-    //     private Animator _animController;
+        private Animator _animController;
     void Start()
     {
-        // _animController = gameObject.GetComponent<Animator>();
+        _animController = gameObject.GetComponent<Animator>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (!_gameManager.isCoop)
         {
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        if (isPlayerOne)
+        if (isPlayerOne == true)
         {
             CalculateMovementPlayerOne();
             if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
@@ -61,7 +62,7 @@ public class Player : MonoBehaviour
                 FireLaser();
             }
         }
-        else if (!isPlayerOne)
+        else if (isPlayerTwo == true)
         {
             CalculateMovementPlayerTwo();
             if (Input.GetKeyDown(KeyCode.Return) && Time.time > _canFire)
@@ -75,6 +76,14 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+        if(horizontalInput < 0){
+            _animController.SetBool("moveLeft",true);
+            _animController.SetBool("moveRight",false);
+        } else if(horizontalInput > 0){
+
+            _animController.SetBool("moveRight",true);
+            _animController.SetBool("moveLeft",false);
+        }
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
         transform.Translate(direction * _speed * Time.deltaTime);
@@ -101,10 +110,14 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             transform.Translate(Vector3.left * _speed * Time.deltaTime);
+            _animController.SetBool("moveLeft",true);
+            _animController.SetBool("moveRight",false);
         }
         else if (Input.GetKey(KeyCode.D))
         {
             transform.Translate(Vector3.right * _speed * Time.deltaTime);
+            _animController.SetBool("moveRight",true);
+            _animController.SetBool("moveLeft",false);
         }
 
 
